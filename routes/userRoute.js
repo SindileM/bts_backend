@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const user = require("../models/userModel");
 const verify = require("../middleware/verify");
-const { retrieveUser } = require("../middleware/retriever.js");
+const { obtainUser } = require("../middleware/obtainer.js");
 const verifyAcc = require("../middleware/authJWT");
 const nodemailer = require("nodemailer");
 
@@ -83,7 +83,7 @@ router.post("/signin", async (req, res) => {
 
 //Update
 
-router.put("/:id", [verifyAcc, retrieveUser], async (req, res) => {
+router.put("/:id", [verifyAcc, obtainUser], async (req, res) => {
   if (req.body.username != null) res.user.username = req.body.username;
   if (req.body.email != null) res.user.email = req.body.email;
   if (req.body.profile != null) res.user.profile = req.body.profile;
@@ -132,7 +132,7 @@ router.put("/:id", [verifyAcc, retrieveUser], async (req, res) => {
 
 //Delete
 
-router.delete("/:id", [verifyAcc, retrieveUser], async (req, res) => {
+router.delete("/:id", [verifyAcc, obtainUser], async (req, res) => {
   try {
     await res.user.remove();
     let transporter = nodemailer.createTransport({

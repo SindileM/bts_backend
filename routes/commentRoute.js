@@ -1,20 +1,20 @@
 const router = require("express").Router();
 const comment = require("../models/commentModel");
-const { retrievePost } = require("../middleware/retriever");
-const { retrieveUser } = require("../middleware/retriever");
+const { obtainPost } = require("../middleware/obtainer");
+const { obtainUser } = require("../middleware/obtainer");
 const verifyAcc = require("../middleware/authJWT");
 const dotenv = require("dotenv");
 dotenv.config();
 
 //Comment Section
 
-router.get("/:id/comments", [verifyAcc, retrievePost], (req, res) => {
+router.get("/:id/comments", [verifyAcc, obtainPost], (req, res) => {
   return res.send(res.post.comments);
 });
 
 router.post(
   "/:id/comments/create",
-  [verifyAcc, retrievePost, retrieveUser],
+  [verifyAcc, obtainPost, obtainUser],
   async (req, res) => {
     let userName = res.user.username;
     let userID = res.user._id;
@@ -37,7 +37,7 @@ router.post(
 
 router.delete(
   "/:id/comments/delete/:comment_id",
-  [verifyAcc, retrievePost, retrieveUser],
+  [verifyAcc, obtainPost, obtainUser],
   async (req, res) => {
     let storedComments = res.post.comments;
     storedComments.forEach((comment) => {

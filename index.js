@@ -12,7 +12,9 @@ const cors = require("cors");
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(process.env.connection, { useNewUrlParser: true }, () => {
+mongoose
+.connect(process.env.connection, { 
+  suseNewUrlParser: true }, () => {
   console.log("Connected to MongoDB database.");
 });
 

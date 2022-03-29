@@ -30,6 +30,6 @@ async function obtainUser(req, res, next) {
 }
 
 module.exports = {
-  obtainPost: retrievePost,
-  obtainUser: retrieveUser,
+  obtainPost: obtainPost,
+  obtainUser: obtainUser,
 };
