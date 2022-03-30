@@ -13,7 +13,7 @@ const postSchema = new mongoose.Schema(
     },
     subtitle: {
       type: String,
-      required: true,
+      required: false,
     },
     desc: {
       type: String,

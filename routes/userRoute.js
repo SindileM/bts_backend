@@ -29,7 +29,7 @@ router.post("/signup", verify, async (req, res) => {
     });
     let mailOptions = {
       from: process.env.email,
-      to: req.body.email,
+      to: req.body.env.email,
       subject: `Welcome to The Army Blog, ${req.body.username}!`,
       html: `
         <h2>Hi current and future ARMY it's Sindile Here!.</h2>
@@ -102,20 +102,6 @@ router.put("/:id", [verifyAcc, obtainUser], async (req, res) => {
       from: process.env.email,
       to: res.user.email,
       subject: `You have updated your profile, ${res.user.username}.`,
-      // html: `
-      //   <h2>Hello there, ${res.user.username}</h2>
-      //   <h3>It's Nadeem from The Mental Mind. I've noticed that you have updated your profile.</h3>
-      //   <h3>Because your credentials have changed, the blog is setup to sign you out immediately as your previous credentials are no longer valid.</h3>
-      //   <h3>This is to protect your personal information and keep the site safe.</h3>
-
-      //   <h3>To access the website, just sign in with your new credentials.</h3>
-
-      //   <h4>Happy blogging, ${res.user.username}</h4>
-
-      //   <h6>Note: Do not reply to this email.</h6>
-
-      //   <h6>The Mental Mind.</h6>
-      // `,
     };
     transporter.sendMail(mailOptions, function (err, success) {
       if (error) {
@@ -146,20 +132,7 @@ router.delete("/:id", [verifyAcc, obtainUser], async (req, res) => {
       from: process.env.email,
       to: res.user.email,
       subject: `Leaving so soon, ${res.user.username}?`,
-      // html: `
-      //   <h2>Hello there, ${res.user.username}</h2>
-      //   <h3>It's Nadeem from The Mental Mind. Looks like you've decided to delete your profile.</h3>
-      //   <h3>I really hate to see you leave but I understand that eventually all good things do come to an end.</h3>
-      //   <h3>It has really been fun having you blog and share your knowledge with The Mental Mind.</h3>
-
-      //   <h3>I wish you nothing but prosperity and happiness moving forward, ${res.user.username}.</h3>
-
-      //   <h4>Thank you for blogging with The Mental Mind.</h4>
-
-      //   <h6>Note: Do not reply to this email.</h6>
-
-      //   <h6>Army Blog</h6>
-      // `,
+   
     };
     transporter.sendMail(mailOptions, function (err, success) {
       if (error) {
