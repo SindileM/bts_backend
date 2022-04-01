@@ -6,7 +6,7 @@ verifyToken = (req, res, next) => {
   let authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
   if (!token) return res.status(403).send({ message: "User not logged in!" });
-  jwt.verify(token, process.env.access, (err, decoded) => {
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
     if (err) return res.status(401).send({ message: "Unauthorized!" });
     req.userId = decoded._id;
     next();

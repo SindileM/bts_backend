@@ -66,14 +66,14 @@ router.post("/signin", async (req, res) => {
       if (!user) return res.sendStatus(404);
       const passMatch = bcrypt.compareSync(req.body.password, user.password);
       if (!passMatch) return res.sendStatus(404);
-      const authToken = jwt.sign({ _id: user._id }, process.env.access);
+      const authToken = jwt.sign({ _id: user._id }, process.env.ACCESS_TOKEN_SECRET);
       if (!authToken) return res.sendStatus(401);
       res.header("auth-token", authToken).send({
         _id: user._id,
         username: user.username,
         email: user.email,
-        access: authToken,
-        profile: user.profile,
+        // ACCESS_TOKEN_SECRET: authToken,
+        // profile: user.profile,
       });
     });
   } catch (error) {
