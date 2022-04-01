@@ -1,13 +1,28 @@
-const dotenv = require("dotenv");
-dotenv.config();
+// const dotenv = require("dotenv");
+// dotenv.config();
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const user = require("../models/userModel");
+const User = require("../models/userModel");
 const verify = require("../middleware/verify");
 const { obtainUser } = require("../middleware/obtainer.js");
 const verifyAcc = require("../middleware/authJWT");
 const nodemailer = require("nodemailer");
+
+// GET
+router.get("/", async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.get("/:id", obtainUser, (req, res) => {
+  res.json(res.user);
+});
+
 
 //Register
 
