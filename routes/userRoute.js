@@ -29,7 +29,7 @@ router.get("/:id", obtainUser, (req, res) => {
 router.post("/signup", verify, async (req, res) => {
   try {
     const passEncryption = bcrypt.hashSync(req.body.password, 8);
-    const newUser = new user({
+    const newUser = new User({
       username: req.body.username,
       email: req.body.email,
       password: passEncryption,
@@ -76,7 +76,7 @@ router.post("/signup", verify, async (req, res) => {
 
 router.post("/signin", async (req, res) => {
   try {
-    const verifyEmail = user.findOne({ email: req.body.email }, (err, user) => {
+    const verifyEmail = User.findOne({ email: req.body.email }, (err, user) => {
       if (!verifyEmail) return res.status(401).send({ message: err.message });
       if (!user) return res.sendStatus(404);
       const passMatch = bcrypt.compareSync(req.body.password, user.password);
