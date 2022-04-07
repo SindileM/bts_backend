@@ -4,7 +4,6 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
-const verify = require("../middleware/verify");
 const { obtainUser } = require("../middleware/obtainer.js");
 const verifyAcc = require("../middleware/authJWT");
 const nodemailer = require("nodemailer");
@@ -26,49 +25,55 @@ router.get("/:id", obtainUser, (req, res) => {
 
 //Register
 
-router.post("/signup", verify, async (req, res) => {
-  try {
+router.post("/signup", async (req, res) => {
+  
     const passEncryption = bcrypt.hashSync(req.body.password, 8);
-    const newUser = new User({
+    console.log("We lost")
+    const user = await new User({
       username: req.body.username,
       email: req.body.email,
       password: passEncryption,
     });
-    await newUser.save();
-    let transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.email,
-        pass: process.env.pass,
-      },
-    });
-    let mailOptions = {
-      from: process.env.email,
-      to: req.body.env.email,
-      subject: `Welcome to The Army Blog, ${req.body.username}!`,
-      html: `
-        <h2>Hi current and future ARMY it's Sindile Here!.</h2>
-        <h3>Thank you for signing up to my blog site!</h3>
-        <h3>This blog is for a band that we know and love. BANGTAN SONYEONDAN commonly known as BTS.</h3>
-        <h4>Just as they spread the message of self love and acceptance so should we.</h4>
+    console.log("Whats'up")
+    console.log(user);
+    try {
+    const newUser = await user.save();
+    // let transporter = nodemailer.createTransport({
+    //   service: "gmail",
+    //   auth: {
+    //     user: process.env.email,
+    //     pass: process.env.pass,
+    //   },
+    // });
+    // let mailOptions = {
+    //   from: process.env.email,
+    //   to: email,
+    //   subject: `Welcome to The Army Blog, ${username}!`,
+    //   text: `
+    //     <h2>Hi current and future ARMY it's Sindile Here!.</h2>
+    //     <h3>Thank you for signing up to my blog site!</h3>
+    //     <h3>This blog is for a band that we know and love. BANGTAN SONYEONDAN commonly known as BTS.</h3>
+    //     <h4>Just as they spread the message of self love and acceptance so should we.</h4>
 
-        <h4>Happy blogging, ${req.body.username}</h4>
+    //     <h4>Happy blogging, ${username}</h4>
 
-        <h6>Note: Do not reply to this email.</h6>
+    //     <h6>Note: Do not reply to this email.</h6>
  
-        <h6>The Army Blog.</h6>
-      `,
-    };
-    transporter.sendMail(mailOptions, function (err, success) {
-      if (error) {
-        res.status(400).send({ message: err.message });
-      } else {
-        res.status(200).send({ message: "Email was sent successfully." });
-      }
-    });
-    res.status(200).send({ message: "Successfully created new user" });
+    //     <h6>The Army Blog.</h6>
+    //   `,
+    // };
+    // transporter.sendMail(mailOptions, function (err, success) {
+    //   if (error) {
+    //     res.status(400).send({ message: err.message });
+    //   } else {
+    //     res.status(200).send({ message: "Email was sent successfully." });
+    //   }
+    // });
+    console.log("We are here")
+    res.status(200).send({ message: "Successfully created new user", newUser});
   } catch (error) {
-    res.status(500).send({ message: "Error creating new user" });
+    console.log("Why are we here")
+    res.status(500).send(error.message);
   }
 });
 
